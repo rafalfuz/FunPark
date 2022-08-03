@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { GlobalStyle } from "./theme/globalStyle";
 
-function App() {
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <h1>FUN PARK</h1>
+      <h2>park linowy</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita,
+        rerum ad quia distinctio maiores ipsum nam praesentium vel molestias eos
+        beatae commodi consectetur minima iusto eius tenetur, esse fuga! Nihil.
+      </p>
+    </>
   );
-}
-
-export default App;
+};
