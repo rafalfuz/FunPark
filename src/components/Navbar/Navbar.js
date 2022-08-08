@@ -1,123 +1,40 @@
 import React, { useState } from "react";
-import styled, { css } from "styled-components";
-import { Link, NavLink } from "react-router-dom";
+import { StyledNavbarWrapper, 
+  StyledNavbar, 
+  StyledNavLogo, 
+  StyledCorpName, 
+  MobileIcon, 
+  StyledNavMenu, 
+  StyledItem, 
+  StyledNavLink} from './NavbarStyles'
+  import { Link, animateScroll as scroll } from "react-scroll";
 import { MdMenu, MdClose } from "react-icons/md";
 
-const StyledNavbarWrapper = styled.nav`
-  background-color: ${({ theme }) => theme.teriarty};
-  height: 80px;
-  display: flex;
-  ${(props) =>
-    props.mobileNavActive &&
-    css`
-      position: fixed;
-      width: 100vw;
-    `}
-`;
 
-const StyledNavbar = styled.ul`
-  list-style-type: none;
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  justify-content: space-between;
-`;
-
-const StyledNavLogo = styled(Link)`
-  text-decoration: none;
-  cursor: pointer;
-  font-size: 2.4rem;
-  display: flex;
-  color: cornsilk;
-`;
-
-const StyledCorpName = styled.h1`
-  text-transform: uppercase;
-`;
-
-const MobileIcon = styled.div`
-  display: none;
-  @media screen and (max-width: 960px) {
-    display: block;
-    position: absolute;
-    top: 0px;
-    right: 0;
-    transform: translate(-100%, 60%);
-    cursor: pointer;
-    font-size: 3rem;
-  }
-`;
-
-const StyledNavMenu = styled.ul`
-  list-style-type: none;
-  width: 80%;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: space-around;
-  @media screen and (max-width: 960px) {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: calc(100vh - 80px);
-    position: fixed;
-    top: 80px;
-    left: ${({ mobile }) => (mobile ? 0 : "-100%")};
-    background-color: ${({ theme }) => theme.teriarty};
-    transition: all 0.5s ease;
-    overflow: hidden;
-  }
-`;
-const StyledItem = styled.li`
-  text-transform: uppercase;
-  border-bottom: 2px solid transparent;
-  &:hover {
-    border-bottom: 2px solid #ff1493;
-    transition: all 0.5s ease;
-  }
-  @media screen and (max-width: 960px) {
-    width: 100%;
-    &:hover {
-      border-bottom: 2px solid transparent;
-    }
-  }
-`;
-
-const StyledNavLink = styled(NavLink)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  font-size: 1.4rem;
-  color: cornsilk;
-  z-index: 9999;
-  &.active {
-    font-weight: 600;
-    font-size: 1.6rem;
-  }
-`;
-
-const StyledBorder = styled.div`
-  border: 2px solid white;
-  padding: 10px;
-  font-weight: bold;
-  &:hover {
-    padding: 8px;
-    transition: all 0.5s ease;
-  }
-`;
 export const Navbar = () => {
   const [mobileActive, setMobileActive] = useState(false);
-
+  const [smallNavbar, setSmallNavbar] = useState(false)
   const handleMobileActive = () => setMobileActive(!mobileActive);
 
   const removeMenuMobile = () => setMobileActive(false);
 
+  const toTop = () => {
+    scroll.scrollToTop();
+    removeMenuMobile();
+  };
+
+  const changeNavbar = () => {
+    if(window.scrollY >= 80){
+      setSmallNavbar(true)
+    } else {
+      setSmallNavbar(false)
+    }
+  }
+  window.addEventListener('scroll', changeNavbar)
   return (
-    <StyledNavbarWrapper mobileNavActive={mobileActive && true}>
+    <StyledNavbarWrapper mobileNavActive={mobileActive && true} className={smallNavbar ? 'navbar microNav' : 'navbar'}>
       <StyledNavbar>
-        <StyledNavLogo to="/" onClick={removeMenuMobile}>
+        <StyledNavLogo to="/" onClick={toTop}>
           <StyledCorpName>LOGO</StyledCorpName>
         </StyledNavLogo>
 
@@ -127,75 +44,71 @@ export const Navbar = () => {
         {mobileActive ? (
           <StyledNavMenu mobile>
             <StyledItem mobile onClick={removeMenuMobile}>
-              <StyledNavLink as={NavLink} to="/oferta">
+              <StyledNavLink as={Link} to="/oferta">
                 Oferta
               </StyledNavLink>
             </StyledItem>
             <StyledItem mobile onClick={removeMenuMobile}>
-              <StyledNavLink as={NavLink} to="/cennik">
+              <StyledNavLink as={Link} to="/cennik">
                 Cennik
               </StyledNavLink>
             </StyledItem>
             <StyledItem mobile onClick={removeMenuMobile}>
-              <StyledNavLink as={NavLink} to="/galeria">
+              <StyledNavLink as={Link} to="/galeria">
                 Galeria
               </StyledNavLink>
             </StyledItem>
             <StyledItem mobile onClick={removeMenuMobile}>
-              <StyledNavLink as={NavLink} to="/polenamiotowe">
+              <StyledNavLink as={Link} to="/polenamiotowe">
                 Pole Namiotowe Audioriver/HHPF
               </StyledNavLink>
             </StyledItem>
             <StyledItem mobile onClick={removeMenuMobile}>
-              <StyledNavLink as={NavLink} to="/dokumenty">
+              <StyledNavLink as={Link} to="/dokumenty">
                 Dokumenty
               </StyledNavLink>
             </StyledItem>
             <StyledItem mobile onClick={removeMenuMobile}>
-              <StyledBorder>
-                <StyledNavLink as={NavLink} to="/kontakt">
+                <StyledNavLink as={Link} to="/kontakt" className='lastStyledLink'>
                   KONTAKT
                 </StyledNavLink>
-              </StyledBorder>
             </StyledItem>
           </StyledNavMenu>
         ) : (
           <StyledNavMenu>
             <StyledItem>
-              <StyledNavLink as={NavLink} to="/oferta" activeclass="active">
-                Oferta
+              <StyledNavLink as={Link} to="/oferta" activeClass="active">
+              {smallNavbar ? 'MiniOferta' : 'Oferta'}
               </StyledNavLink>
             </StyledItem>
             <StyledItem>
-              <StyledNavLink as={NavLink} to="/cennik" activeclass="active">
+              <StyledNavLink as={Link} to="/cennik" activeClass="active">
                 Cennik
               </StyledNavLink>
             </StyledItem>
             <StyledItem>
-              <StyledNavLink as={NavLink} to="/galeria" activeclass="active">
+              <StyledNavLink as={Link} to="/galeria" activeClass="active">
                 Galeria
               </StyledNavLink>
             </StyledItem>
             <StyledItem>
               <StyledNavLink
-                as={NavLink}
+                as={Link}
                 to="/polenamiotowe"
-                activeclass="active"
+                activeClass="active"
               >
                 Pole Namiotowe Audioriver/HHPF
               </StyledNavLink>
             </StyledItem>
             <StyledItem>
-              <StyledNavLink as={NavLink} to="/dokumenty" activeclass="active">
+              <StyledNavLink as={Link} to="/dokumenty" activeClass="active">
                 Dokumenty
               </StyledNavLink>
             </StyledItem>
             <StyledItem>
-              <StyledBorder>
-                <StyledNavLink as={NavLink} to="/kontakt" activeclass="active">
+                <StyledNavLink as={Link} to="/kontakt" activeClass="active" className='lastStyledLink'>
                   KONTAKT
                 </StyledNavLink>
-              </StyledBorder>
             </StyledItem>
           </StyledNavMenu>
         )}
